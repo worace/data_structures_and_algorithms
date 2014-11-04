@@ -15,7 +15,6 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_it_pushes_three_elements_onto_a_list
-    skip
     list.push("hello")
     list.push("world")
     list.push("today")
@@ -23,7 +22,6 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_it_pops_the_last_element_from_the_list
-    skip
     list.push("hello")
     list.push("world")
     list.push("today")
@@ -33,7 +31,6 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_a_popped_element_is_removed
-    skip
     list.push("hello")
     output = list.pop
     assert_equal "hello", output
@@ -41,7 +38,6 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_it_pops_nil_when_there_are_no_elements
-    skip
     assert_nil list.pop
   end
 

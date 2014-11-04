@@ -42,22 +42,19 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_it_deletes_a_solo_node
-    skip
     list.push("hello")
     list.delete("hello")
     assert_equal 0, list.count
   end
 
   def test_it_does_not_delete_when_the_data_does_not_match
-    skip
     list.push("hello")
     list.push("world")
     list.delete("today")
     assert_equal 2, list.count
   end
 
-  def test_it_deletes_a_last_node
-    skip
+  def test_it_deletes_a_tail
     list.push("hello")
     list.push("world")
     list.push("today")
@@ -66,7 +63,6 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_it_deletes_a_middle_node
-    skip
     list.push("hello")
     list.push("world")
     list.push("today")
@@ -77,7 +73,6 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_it_deletes_the_head_when_there_are_more_nodes
-    skip
     list.push("hello")
     list.push("world")
     list.push("today")
@@ -88,42 +83,36 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_it_converts_to_an_array_when_there_are_no_elements
-    skip
     assert_equal [], list.to_a
   end
 
   def test_it_converts_to_an_array_with_several_elements
-    skip
     list.push("hello")
     list.push("world")
     list.push("today")
     assert_equal ["hello", "world", "today"], list.to_a
   end
 
-  def test_it_finds_the_last_node
-    skip
+  def test_it_finds_the_tail
     list.push("hello")
     list.push("world")
-    node = list.last_node
+    node = list.tail
     assert_equal "world", node.data
   end
 
   def test_a_node_links_to_its_next_element
-    skip
     list.push("hello")
     list.push("world")
-    assert_equal "world", list.last_node.data
-    assert_equal "world", list.head_node.next_node.data
+    assert_equal "world", list.tail.data
+    assert_equal "world", list.head.next.data
   end
 
-  def test_next_node_for_the_last_node_is_nil
-    skip
+  def test_next_for_the_tail_is_nil
     list.push("world")
-    assert_nil list.last_node.next_node
+    assert_nil list.tail.next
   end
 
   def test_find_if_an_element_is_included_in_the_list
-    skip
     list.push("hello")
     list.push("world")
     assert_equal true, list.include?("hello")
@@ -131,48 +120,72 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_find_a_given_node
-    skip
     list.push("hello")
     list.push("world")
     list.push("today")
 
     assert_equal "world", list.find("world").data
-    assert_equal "today", list.find("world").next_node.data
+    assert_equal "today", list.find("world").next.data
+  end
+
+  def test_index
+    list.push("hello")
+    assert_equal 0, list.index("hello")
+    list.push("pizza")
+    assert_equal 1, list.index("pizza")
+    list.push("batman")
+    assert_equal 2, list.index("batman")
+  end
+
+  def test_braces_gets_item_at_index
+    list.push("hello")
+    list.push("pizza")
+    list.push("batman")
+    assert_equal "hello", list[0].data
+    assert_equal "pizza", list[1].data
+    assert_equal "batman", list[2].data
   end
 
   def test_inserts_node_at_arbitrary_position
-    skip
     list.push("hello")
     list.push("world")
     list.push("today")
 
     list.insert(1, "pizza")
 
-    assert_equal 1, list.index("pizza")
     assert_equal ["hello", "pizza", "world", "today"], list.to_a
+    assert_equal 1, list.index("pizza")
   end
 
-  def test_inserted_node_is_next_node_for_previous_node
-    skip
+  def test_inserted_node_is_next_for_previous_node
     list.push("hello")
     list.push("world")
     list.push("today")
 
     list.insert(1, "pizza")
 
-    assert_equal "world", list.find("pizza").next_node.data
-    assert_equal "pizza", list.find("hello").next_node.data
+    assert_equal "world", list.find("pizza").next.data
+    assert_equal "pizza", list.find("hello").next.data
   end
 
   def test_insert_after_adds_a_node_after_a_given_node
-    skip
     list.push("hello")
     list.push("world")
     list.push("today")
 
     list.insert_after("hello", "pizza")
 
-    assert_equal "world", list.find("pizza").next_node.data
-    assert_equal "pizza", list.find("hello").next_node.data
+    assert_equal "world", list.find("pizza").next.data
+    assert_equal "pizza", list.find("hello").next.data
+  end
+
+  def test_insert_after_does_nothing_if_anchor_is_not_in_list
+    list.push("hello")
+    list.push("world")
+    list.push("today")
+
+    list.insert_after("batman", "pizza")
+
+    assert_nil list.find("pizza")
   end
 end

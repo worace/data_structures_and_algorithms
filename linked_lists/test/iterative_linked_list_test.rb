@@ -60,6 +60,7 @@ class IterativeLinkedListTest < Minitest::Test
     list.push("today")
     list.delete("today")
     assert_equal 2, list.count
+    assert_nil list.find("today")
   end
 
   def test_it_deletes_a_middle_node
@@ -80,6 +81,13 @@ class IterativeLinkedListTest < Minitest::Test
     assert_equal 2, list.count
     assert_equal "today", list.pop
     assert_equal "world", list.pop
+  end
+
+  def test_index_of_non_existant_node_is_nil
+    list.push("hello")
+    list.push("world")
+    list.push("today")
+    assert_nil list.index("pizza")
   end
 
   def test_it_converts_to_an_array_when_there_are_no_elements
@@ -187,5 +195,32 @@ class IterativeLinkedListTest < Minitest::Test
     list.insert_after("batman", "pizza")
 
     assert_nil list.find("pizza")
+  end
+
+  def test_map_works_on_data
+    list.push("hello")
+    list.push("world")
+    list.push("today")
+    assert_equal ["hello", "world", "today"], list.map(&:data)
+  end
+
+  def test_each_yields_each_item
+    list.push("hello")
+    list.push("world")
+    list.push("today")
+
+    a = []
+    list.each do |item|
+      a << item.data
+    end
+    assert_equal ["hello", "world", "today"], a
+  end
+
+  def test_node_has_children
+    list.push("hello")
+    list.push("world")
+    list.push("today")
+
+    assert_equal ["world", "today"], list.head.children.map(&:data)
   end
 end

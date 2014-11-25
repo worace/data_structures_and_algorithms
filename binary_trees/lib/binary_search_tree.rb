@@ -60,4 +60,25 @@ class BinarySearchTree
     return [] unless node
     post_ordered(node.left) + post_ordered(node.right) + [node.data]
   end
+
+  def min_height(node = root_node)
+    return 0 unless node
+    [1 + min_height(node.left), 1 + min_height(node.right)].min
+  end
+
+  def max_height(node = root_node)
+    return 0 unless node
+    [1 + max_height(node.left), 1 + max_height(node.right)].max
+  end
+
+  def balanced?
+    (max_height - min_height).abs <= 1
+  end
+
+  def balance!
+    data = to_array
+    new_root = data.delete(data.length/2)
+    @root_node = Node.new(new_root)
+    data.each { |i| push(i) }
+  end
 end

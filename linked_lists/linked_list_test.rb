@@ -3,7 +3,7 @@ require 'minitest/autorun'
 require 'minitest/pride'
 require './linked_list'
 
-class IterativeLinkedListTest < Minitest::Test
+class LinkedListTest < Minitest::Test
   attr_reader :list
 
   def setup
@@ -11,13 +11,11 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_nodes_have_data
-    skip
     node = Node.new("pizza")
     assert_equal "pizza", node.data
   end
 
   def test_nodes_have_next_node
-    skip
     n1 = Node.new("pizza")
     n2 = Node.new("cats")
     n1.next_node = n2
@@ -25,40 +23,56 @@ class IterativeLinkedListTest < Minitest::Test
     assert_equal Node, n1.next_node.class
   end
 
-  def test_it_accepts_next_node_on_init
-    skip
-    n1 = Node.new("pizza", Node.new("cats"))
-    assert_equal "cats", n1.next_node.data
-    assert_equal Node, n1.next_node.class
-  end
-
   def test_it_starts_with_zero_elements
-    skip
     assert_equal 0, list.count
   end
 
   def test_a_new_list_starts_with_nil_head
-    skip
     assert_equal nil, LinkedList.new.head
   end
 
   def test_it_pushes_a_single_element_onto_a_list
-    skip
     list.push("pizza")
     assert_equal "pizza", list.head.data
     assert_equal 1, list.count
   end
 
   def test_it_pushes_two_elements
-    skip
     list.push("pizza")
     assert_equal "pizza", list.head.data
     list.push("stromboli")
     assert_equal "stromboli", list.head.next_node.data
   end
 
-  def test_it_pushes_three_elements_onto_a_list
+  def test_it_finds_value_at_a_given_position
+    list.push("pizza")
+    list.push("stromboli")
+    list.push("lasagna")
+    list.push("calzone")
+    list.push("manicotti")
+
+    assert_equal "pizza", list.position(0)
+    assert_equal "calzone", list.position(3)
+    assert_equal "manicotti", list.position(4)
+  end
+
+  def test_it_pushes_recursively
     skip
+    list = LinkedList.new
+    assert_nil list.head
+    list.rec_push("pizza")
+    assert_equal "pizza", list.head.data
+    assert_equal 1, list.count
+    list.rec_push("stromboli")
+    assert_equal "stromboli", list.head.next_node.data
+    assert_equal 2, list.count
+    list.rec_push("hi")
+    list.rec_push("wat")
+    list.rec_push("lol")
+    assert_equal 5, list.count
+  end
+
+  def test_it_pushes_three_elements_onto_a_list
     list.push("hello")
     assert_equal "hello", list.head.data
     list.push("world")
@@ -70,7 +84,6 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_it_adds_four_elements
-    skip
     list.push("hello")
     list.push("world")
     list.push("today")
@@ -81,26 +94,27 @@ class IterativeLinkedListTest < Minitest::Test
   end
 
   def test_it_pops_the_last_element_from_the_list
-    skip
     list.push("hello")
     list.push("world")
     list.push("today")
-    output = list.pop
-    assert_equal "today", output
+    list.pop
     assert_equal 2, list.count
+    assert_nil list.head.next_node.next_node
   end
 
-  def test_a_popped_element_is_removed
-    skip
+  def test_it_pops_head
     list.push("hello")
-    output = list.pop
-    assert_equal "hello", output
+    list.pop
     assert_equal 0, list.count
+    assert_nil list.head
   end
 
-  def test_it_pops_nil_when_there_are_no_elements
-    skip
-    assert_nil list.pop
+  def test_it_pops_list_of_two
+    list.push("hello")
+    list.push("world")
+    list.pop
+    assert_equal 1, list.count
+    assert_equal "hello", list.head.data
   end
 
   def test_it_deletes_a_solo_node

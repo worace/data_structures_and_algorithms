@@ -15,3 +15,10 @@
   (testing "it finds coords for start-position in grid"
     (let [ls (parse-landscape (landscape-file "easiest.txt"))]
       (is (= [1 1] (start-pos ls))))))
+
+; # -- [1,0]
+;#S# -- [0,1 1,1(start) 2,1]
+; #  -- [1,2]
+(deftest finding-neighbors-of-a-coord
+  (testing "it finds top,bottom,left,right neighbors"
+    (is (= [[1 0] [0 1] [2 1] [1 2]] (neighbors [1 1])))))

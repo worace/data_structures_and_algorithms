@@ -30,3 +30,10 @@
 (defn start-pos [ls-map]
   (first (first (filter (fn [pair] (= "S" (last pair))) ls-map))))
 
+(defn shift-coord [shift coord]
+  [(+ (get shift 0) (get coord 0)) (+ (get shift 1) (get coord 1))])
+
+(defn neighbors [coords]
+  (let [shifts [[0 -1] [-1 0] [1 0] [0 1]]]
+    (map (fn [pair] (apply shift-coord pair)) (map vector shifts (repeat coords)))))
+

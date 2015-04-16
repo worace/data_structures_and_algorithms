@@ -22,3 +22,10 @@
 (deftest finding-neighbors-of-a-coord
   (testing "it finds top,bottom,left,right neighbors"
     (is (= [[1 0] [0 1] [2 1] [1 2]] (neighbors [1 1])))))
+
+(deftest queueing-neighbors-of-coord
+  (testing "it only queues passable (non-#) cells"
+    (let [ls (parse-landscape (landscape-file "easiest.txt"))
+          queue (queue-neighbors (clojure.lang.PersistentQueue/EMPTY) ls [1 1])]
+      (is (= [2 1] (first queue)))
+      (is (= 1 (count queue))))))

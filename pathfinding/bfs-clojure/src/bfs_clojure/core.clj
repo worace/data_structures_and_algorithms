@@ -37,3 +37,7 @@
   (let [shifts [[0 -1] [-1 0] [1 0] [0 1]]]
     (map (fn [pair] (apply shift-coord pair)) (map vector shifts (repeat coords)))))
 
+(defn queue-neighbors [queue landscape coord]
+  (apply conj queue
+         (filter (fn [n] (not (= "#" (get landscape n))))
+                 (keys (select-keys landscape (neighbors coord))))))
